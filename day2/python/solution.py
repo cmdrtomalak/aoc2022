@@ -1,5 +1,6 @@
-from enum import Enum
+#!/usr/bin/python3
 
+from enum import Enum
 
 class Move(Enum):
     ROCK = 1
