@@ -24,24 +24,18 @@ def get_common_item(data: [str]) -> [str]:
     return total_common
 
 
-def game_part1(data: [str]) -> int:
+def game_part1(common: [str]) -> int:
     sum_of_priorities = 0
-    for s in data:
-        s1 = set(s[:int(len(s)/2)])
-        s2 = set(s[int(len(s)/2):])
-        # intersection of set
-        common = s1 & s2
-
-        for ch in common:
-            if ch.isalpha():
-                if ch.islower():
-                    # a-z is 97 to 122 in ascii
-                    # Lowercase letters have priorities 1-26
-                    sum_of_priorities += ord(ch) - 96
-                else:
-                    # A-Z is 65 to 90 in ascii
-                    # Capital letters have priorities 27 to 52
-                    sum_of_priorities += ord(ch) - 64 + 26
+    for ch in common:
+        if ch.isalpha():
+            if ch.islower():
+                # a-z is 97 to 122 in ascii
+                # Lowercase letters have priorities 1-26
+                sum_of_priorities += ord(ch) - 96
+            else:
+                # A-Z is 65 to 90 in ascii
+                # Capital letters have priorities 27 to 52
+                sum_of_priorities += ord(ch) - 64 + 26
 
     return sum_of_priorities
 
@@ -69,6 +63,6 @@ def game_part2(badges: [str]) -> int:
 if __name__ == '__main__':
     data = read_file('input.txt')
     common = get_common_item(data)
-    print(game_part1(data))
+    print(game_part1(common))
     print(game_part2(common))
 
