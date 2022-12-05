@@ -1,6 +1,16 @@
+use anyhow::Result;
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::BufReader;
 
-const INPUT: &str = include_str!("../input.txt");
+fn read_file(filename: &str) -> Result<Vec<String>> {
+    let file = File::open(filename)?;
+    let reader = BufReader::new(file);
+
+    let data = reader.lines().collect::<Result<_, _>>().unwrap();
+
+    Ok(data)
+}
 
 fn get_priority(item: &char) -> usize {
     let lower: HashMap<char, usize> = ('a'..='z')
@@ -19,8 +29,9 @@ fn get_priority(item: &char) -> usize {
     5
 }
 
-fn main() {
-    let input: Vec<&str> = INPUT.lines().collect();
+fn main() -> Result<()> {
+    // get_priority(&'a');
+    let data = read_file("input.txt")?;
 
-    get_priority(&'a');
+    Ok(())
 }
