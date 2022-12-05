@@ -1,7 +1,7 @@
 use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufRead, BufReader};
 
 fn read_file(filename: &str) -> Result<Vec<String>> {
     let file = File::open(filename)?;
@@ -23,15 +23,45 @@ fn get_priority(item: &char) -> usize {
         .map(|c| (c, c as usize - 38))
         .collect();
 
-    dbg!(lower);
-    dbg!(upper);
-
-    5
+    if item.is_lowercase() {
+        return *lower.get(item).unwrap();
+    } else {
+        return *upper.get(item).unwrap();
+    }
 }
 
 fn main() -> Result<()> {
     // get_priority(&'a');
     let data = read_file("input.txt")?;
+
+    println!(
+        "Part 1: {:?}",
+        data.iter()
+            .map(|r| {
+                let (comp1, comp2) = r.split_at(r.len() / 2);
+                for c in comp1.chars() {
+                    if comp2.contains(c) {
+                        return get_priority(&c);
+                    }
+                }
+                panic!("Couldn't find a pair.");
+            })
+            .sum::<usize>()
+    );
+
+    println!(
+        "Part 2: {:?}",
+        data.chunks(3)
+            .map(|chunk| {
+                for c in chunk[0].chars() {
+                    if chunk[1].contains(c) && chunk[2].contains(c) {
+                        return get_priority(&c);
+                    }
+                }
+                panic!("Couldn't find comon item.");
+            })
+            .sum::<usize>()
+    );
 
     Ok(())
 }
