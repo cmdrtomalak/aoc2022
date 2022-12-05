@@ -46,7 +46,8 @@ def game_part2(data: [str]) -> int:
     for i in range(0, len(data), 3):
         elf_group = data[i: i+3]
 
-        badge = [x for x in elf_group[0] if x in elf_group[1] and x in elf_group[2]][0]
+        badge = set(elf_group[0]) & set(elf_group[1]) & set(elf_group[2])
+        badge = badge.pop()
 
         if badge.isalpha():
             if badge.islower():
