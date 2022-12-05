@@ -31,7 +31,6 @@ fn get_priority(item: &char) -> usize {
 }
 
 fn main() -> Result<()> {
-    // get_priority(&'a');
     let data = read_file("input.txt")?;
 
     println!(
@@ -58,7 +57,7 @@ fn main() -> Result<()> {
                         return get_priority(&c);
                     }
                 }
-                panic!("Couldn't find comon item.");
+                panic!("Couldn't find common item.");
             })
             .sum::<usize>()
     );
