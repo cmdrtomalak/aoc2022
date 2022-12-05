@@ -40,22 +40,23 @@ def game_part1(common: [str]) -> int:
     return sum_of_priorities
 
 
-def game_part2(badges: [str]) -> int:
+def game_part2(data: [str]) -> int:
     sum_of_priorities = 0
-    uniq_badges = set(badges)
 
-    for elm in uniq_badges:
-        badge_group = floor(badges.count(elm) / 3)
+    for i in range(0, len(data), 3):
+        elf_group = data[i: i+3]
 
-        if elm.isalpha():
-            if elm.islower():
+        badge = [x for x in elf_group[0] if x in elf_group[1] and x in elf_group[2]][0]
+
+        if badge.isalpha():
+            if badge.islower():
                 # a-z is 97 to 122 in ascii
                 # Lowercase letters have priorities 1-26
-                sum_of_priorities += (ord(elm) - 96) * badge_group
+                sum_of_priorities += (ord(badge) - 96)
             else:
                 # A-Z is 65 to 90 in ascii
                 # Capital letters have priorities 27 to 52
-                sum_of_priorities += (ord(elm) - 64 + 26) * badge_group
+                sum_of_priorities += (ord(badge) - 64 + 26)
 
     return sum_of_priorities
 
@@ -64,5 +65,5 @@ if __name__ == '__main__':
     data = read_file('input.txt')
     common = get_common_item(data)
     print(game_part1(common))
-    print(game_part2(common))
+    print(game_part2(data))
 
