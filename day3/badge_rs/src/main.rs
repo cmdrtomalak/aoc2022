@@ -1,4 +1,5 @@
 use anyhow::Result;
+use itertools::Itertools;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -50,11 +51,12 @@ fn main() -> Result<()> {
 
     println!(
         "Part 2: {:?}",
-        data.chunks(3)
-            .map(|chunk| {
-                for c in chunk[0].chars() {
-                    if chunk[1].contains(c) && chunk[2].contains(c) {
-                        return get_priority(&c);
+        data.iter()
+            .tuples()
+            .map(|(a, b, c)| {
+                for ch in a.chars() {
+                    if b.contains(ch) && c.contains(ch) {
+                        return get_priority(&ch);
                     }
                 }
                 panic!("Couldn't find common item.");
