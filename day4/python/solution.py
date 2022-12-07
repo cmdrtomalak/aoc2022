@@ -33,5 +33,5 @@ def part2(data: list(tuple(set()))) -> int:
 
 if __name__ == "__main__":
     data = read_file("input.txt")
-    print(part1(data))
-    print(part2(data))
+    print("Part 1: ", part1(data))
+    print("Part 2: ", part2(data))
