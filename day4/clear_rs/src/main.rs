@@ -1,4 +1,5 @@
 use anyhow::Result;
+use itertools::Itertools;
 use std::collections::HashSet;
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
@@ -16,7 +17,24 @@ fn read_file(filename: &str) -> Result<Vec<String>> {
 }
 
 fn parse(raw: &Vec<String>) {
-    for line in raw {}
+    /*
+    for line in raw {
+        for elf in line.split(",") {
+            println!("{elf}");
+        }
+    }
+    */
+    let parsed: Vec<(usize, usize, usize, usize)> = raw
+        .iter()
+        .map(|l| {
+            l.split(['-', ','])
+                .map(|v| v.parse::<usize>().unwrap())
+                .collect_tuple::<(_, _, _, _)>()
+                .unwrap()
+        })
+        .collect();
+
+    dbg!(parsed);
 }
 
 fn main() {
