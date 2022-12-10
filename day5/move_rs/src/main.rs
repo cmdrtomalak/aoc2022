@@ -4,9 +4,9 @@ use std::str::Lines;
 
 #[derive(Debug)]
 struct Move {
-    n_crate: u8,
-    src: u8,
-    dest: u8,
+    n_crate: usize,
+    src: usize,
+    dest: usize,
 }
 
 fn parse_stack(stack_text: Lines) -> HashMap<usize, String> {
@@ -36,19 +36,30 @@ fn parse_moves(moves_as_string: Lines) -> Vec<Move> {
     moves_as_vec
 }
 
-fn solver(stack_map: &mut HashMap<usize, String>, moves_vec: &Vec<Move>) -> String {
+fn solver(stack_map: &mut HashMap<usize, String>, moves_vec: &Vec<Move>, part: u8) -> String {
     for m in moves_vec.iter() {
         let src = stack_map.get(&m.src).unwrap().clone();
-        let dest = stack_map.get(&m.dest).unwrap().clone();
+        let mut dest = stack_map.get(&m.dest).unwrap().clone();
 
         let split_idx = src.len() - m.n_crate;
         let (new_src, tail) = src.split_at(split_idx);
 
-        let dest = &tail.chars().rev().collect::<String>();
+        if part == 1 {
+            dest = dest + &tail.chars().rev().collect::<String>();
+        } else if part == 2 {
+            dest = dest + tail;
+        }
 
         stack_map.insert(m.src, new_src.to_string());
         stack_map.insert(m.dest, dest);
     }
+
+    let mut tops = String::new();
+    for i in 1..10 {
+        let top = stack_map.get(&i).unwrap().clone().pop().unwrap();
+        tops.push(top);
+    }
+    tops
 }
 
 fn main() {
@@ -58,8 +69,13 @@ fn main() {
     let file_as_vec: Vec<&str> = file_as_string.split("\n\n").collect();
 
     let stack_text = file_as_vec.first().unwrap().lines();
-    let stack_map = parse_stack(stack_text);
+    let mut stack_map = parse_stack(stack_text);
 
     let moves_as_string = file_as_vec.last().unwrap().lines();
     let moves_as_vec: Vec<Move> = parse_moves(moves_as_string);
+
+    let tops1 = solver(&mut stack_map.clone(), &moves_as_vec, 1);
+    let tops2 = solver(&mut stack_map, &moves_as_vec, 2);
+    println!("Part 1: {}", tops1);
+    println!("Part 2: {}", tops2);
 }
