@@ -16,14 +16,20 @@ fn read_file(filename: &str) -> Result<Vec<String>> {
     Ok(data)
 }
 
-fn parse(raw: &Vec<String>) -> (HashSet<usize>, HashSet<usize>) {
+fn parse(raw: &Vec<String>) {
+    /*
+    for line in raw {
+        for elf in line.split(",") {
+            println!("{elf}");
+        }
+    }
+    */
     let parsed: Vec<(usize, usize, usize, usize)> = raw
         .iter()
         .map(|l| {
             l.split(['-', ','])
                 .map(|v| v.parse::<usize>().unwrap())
                 .collect_tuple::<(_, _, _, _)>()
-                .map(|(n1, n2, n3, n4)| (n1, n2, n3, n4))
                 .unwrap()
         })
         .collect();
