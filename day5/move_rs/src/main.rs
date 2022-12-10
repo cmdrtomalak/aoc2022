@@ -36,6 +36,21 @@ fn parse_moves(moves_as_string: Lines) -> Vec<Move> {
     moves_as_vec
 }
 
+fn solver(stack_map: &mut HashMap<usize, String>, moves_vec: &Vec<Move>) -> String {
+    for m in moves_vec.iter() {
+        let src = stack_map.get(&m.src).unwrap().clone();
+        let dest = stack_map.get(&m.dest).unwrap().clone();
+
+        let split_idx = src.len() - m.n_crate;
+        let (new_src, tail) = src.split_at(split_idx);
+
+        let dest = &tail.chars().rev().collect::<String>();
+
+        stack_map.insert(m.src, new_src.to_string());
+        stack_map.insert(m.dest, dest);
+    }
+}
+
 fn main() {
     let filename = "input.txt";
 
@@ -47,5 +62,4 @@ fn main() {
 
     let moves_as_string = file_as_vec.last().unwrap().lines();
     let moves_as_vec: Vec<Move> = parse_moves(moves_as_string);
-    dbg!(moves_as_vec);
 }
